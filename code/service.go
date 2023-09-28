@@ -11,8 +11,8 @@ import (
 type service struct {
 }
 
-func NewService() service {
-	return service{}
+func NewService() *service {
+	return &service{}
 }
 
 func (s *service) Run(ctx context.Context, code Code) (Output, error) {
@@ -38,6 +38,7 @@ func (s *service) Run(ctx context.Context, code Code) (Output, error) {
 	switch ctx.Err() {
 	case context.DeadlineExceeded:
 		output.Message = "Time limit exceeded."
+		output.Output = outb.String()
 	case context.Canceled:
 		output.Output = outb.String()
 	default:

@@ -1,6 +1,7 @@
 package code
 
 import (
+	"context"
 	"golox-playground/response"
 	"net/http"
 
@@ -8,7 +9,7 @@ import (
 )
 
 type Service interface {
-	Run(code Code) (Output, error)
+	Run(ctx context.Context, code Code) (Output, error)
 }
 
 type handler struct {
@@ -36,7 +37,7 @@ func (h *handler) Run(ctx *gin.Context) {
 		return
 	}
 
-	output, err := h.service.Run(code)
+	output, err := h.service.Run(ctx.Request.Context(), code)
 	if err != nil {
 		ctx.AbortWithStatusJSON(
 			http.StatusBadRequest,
